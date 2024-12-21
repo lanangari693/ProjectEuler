@@ -536,7 +536,28 @@ void answer_18(){
 	}
 	cout<<largest_sum<<endl;
 }
+void answer_19(){
+	//0 for sunday, then 1 jan 1900 -> 1
+	//1900 not a leap year, so there was 355 days
+	int start_day_of_this_month = (1 + 365%7)%7; //first day of 1st jan 1901
+	int start_day_of_next_month = 0;
+	int cnt_sunday = 0;
 
+	int days_month[13] = {0, 31,28,31,30,31,30,31,31,30,31,30,31};
+
+	for(int year=1901;year<2001;year++){
+		for(int month = 1;month <=12;month++){
+			if(start_day_of_this_month == 0) cnt_sunday++;
+
+			start_day_of_next_month = start_day_of_this_month + days_month[month];
+			if(month == 2 && is_leap_year(year)) start_day_of_next_month++;
+			start_day_of_next_month %= 7;
+
+			start_day_of_this_month = start_day_of_next_month;
+		}
+	}
+	cout<<cnt_sunday<<endl;
+}
 
 bool is_prime(long long n) {
 	if (n == 2) return true;
@@ -597,5 +618,13 @@ int count_devisors(int n){
 	//check if the number is square number
 	if(sqrt(n) * sqrt(n) == n) cnt++;
 	return cnt;
+}
+bool is_leap_year(int year){
+	if(year%4==0){
+		if(year%400 == 0) return true;
+		if(year%100 == 0) return false;
+		return true;
+	}
+	return false;
 }
 

@@ -29,6 +29,7 @@ void answer_15();
 void answer_16();
 void answer_17();
 void answer_18();
+void answer_19();
 
 //helper function
 bool is_prime(long long n);
@@ -36,4 +37,5 @@ long long next_prime(int n);
 bool is_palindrome(long long n);
 vector<Exponent> prime_decomposition(long long n);
 int count_devisors(int n);
+bool is_leap_year(int year);
 #endif
