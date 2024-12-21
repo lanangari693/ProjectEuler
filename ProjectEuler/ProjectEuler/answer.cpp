@@ -436,6 +436,107 @@ void answer_16(){
 	}
 	cout<<sum_digits<<endl;
 }
+void answer_17(){
+	vector<string> ones = {"zero","one", "two","three", "four", "five", "six", "seven", "eight", "nine"};
+	vector<string> teens = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+	vector<string> tens = {"zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+	string hundreds_s = "hundred";
+	string thousand_s = "thousand";
+	string and_s = "and";
+	int cnt_length = 0;
+	
+	for(int i=1;i<1000;i++){
+		string res;
+		int check = i;
+		int hundreds_n = check/100;
+		check %= 100;
+		int tens_n = check/10;
+		check %= 10;
+		int ones_n = check;
+
+		//check
+		if(hundreds_n > 0) res += ones[hundreds_n] + " " + hundreds_s + " ";
+		if(hundreds_n > 0 && (tens_n > 0 || ones_n > 0)) res += and_s + " ";
+		if(tens_n == 1) res += teens[ones_n];
+		if(tens_n > 1) res += tens[tens_n] + " ";
+		if(tens_n != 1 && ones_n > 0) res += ones[ones_n];
+		cout<<res;
+
+		res="";
+		if(hundreds_n > 0) res += ones[hundreds_n] + hundreds_s;
+		if(hundreds_n > 0 && (tens_n > 0 || ones_n > 0)) res += and_s;
+		if(tens_n == 1) res += teens[ones_n];
+		if(tens_n > 1) res += tens[tens_n];
+		if(tens_n != 1 && ones_n > 0) res += ones[ones_n];
+		cout<<"  = "<<res.size()<<endl;
+		cnt_length += res.size();
+	}
+	string one_thousand_s = ones[1] + thousand_s;
+	cnt_length += (one_thousand_s).size();
+	cout<<cnt_length<<endl;
+}
+void answer_18(){
+	string triangle_string = R"(75
+95 64
+17 47 82
+18 35 87 10
+20 04 82 47 65
+19 01 23 75 03 34
+88 02 77 73 07 63 67
+99 65 04 28 06 16 70 92
+41 41 26 56 83 40 80 70 33
+41 48 72 33 47 32 37 16 94 29
+53 71 44 65 25 43 91 52 97 51 14
+70 11 33 28 77 73 17 78 39 68 17 57
+91 71 52 38 17 14 91 43 58 50 27 29 48
+63 66 04 68 89 53 67 30 73 16 69 87 40 31
+04 62 98 27 23 09 70 98 73 93 38 53 60 04 23)";
+
+	int triangle_val[15][15];
+	int idx = 0;
+	for(int i=0;i<15;i++){
+		int val = 0;
+		for(int j=0;j<15;j++){
+			if(j>i) val = 0;
+			else{
+				val = (char(triangle_string[idx])-'0')*10 + (char(triangle_string[idx+1])-'0');
+				idx += 3;
+			}
+			triangle_val[i][j] = val;
+		}
+	}
+
+	for(int i=0;i<15;i++){
+		for(int j=0;j<i+1;j++){
+			cout<<triangle_val[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+
+	//idea is to check from up to down, and add current triangle value to adjecent below triangle value. 
+	//If the triangle below is affected by 2 value, then choose the bigger one
+	for(int i=1;i<15;i++){
+		for(int j=0;j<i+1;j++){
+			//boundary triangle
+			if(j==0 || j==i){
+				if(j==0) triangle_val[i][j] += triangle_val[i-1][0];
+				if(j==i) triangle_val[i][j] += triangle_val[i-1][j-1];
+			}
+			//middle triangle
+			else{
+				triangle_val[i][j] += (triangle_val[i-1][j-1] > triangle_val[i-1][j]) ? triangle_val[i-1][j-1] : triangle_val[i-1][j];
+			}
+		}
+	}
+
+	//check the largest sum
+	int largest_sum = 0;
+	for(int i=0;i<15;i++){
+		if(triangle_val[14][i] > largest_sum) largest_sum = triangle_val[14][i];
+	}
+	cout<<largest_sum<<endl;
+}
+
 
 bool is_prime(long long n) {
 	if (n == 2) return true;

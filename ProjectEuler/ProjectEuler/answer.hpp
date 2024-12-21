@@ -27,6 +27,8 @@ void answer_13();
 void answer_14();
 void answer_15();
 void answer_16();
+void answer_17();
+void answer_18();
 
 //helper function
 bool is_prime(long long n);
