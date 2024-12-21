@@ -20,7 +20,7 @@ void answer_7();
 void answer_8();
 void answer_9();
 
-//helping function
+//helper function
 bool is_prime(long long n);
 long long next_prime(int n);
 bool is_palindrome(long long n);
