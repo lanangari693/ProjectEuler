@@ -2,7 +2,7 @@
 int main() {
 
 	//call answer
-	answer_19();
+	answer_22();
 
 	cin.get();
 	return 0;

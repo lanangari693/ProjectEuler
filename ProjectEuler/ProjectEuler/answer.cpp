@@ -558,6 +558,67 @@ void answer_19(){
 	}
 	cout<<cnt_sunday<<endl;
 }
+void answer_20(){
+	string num = "1";
+	int n_factorial = 100;
+	for(int i=2;i<n_factorial+1;i++){
+		string num_i = num;
+		//calc num * i
+		for(int j=1;j<i;j++){
+			num_i = add_num_string(num_i, num);
+		}
+		num = num_i;
+	}
+	cout<<"100! = "<<num<<endl;
+
+	//count sum digits
+	int sum_digits = 0;
+	for(int i=0;i<num.size();i++){
+		sum_digits += char(num[i]) - '0'; 
+	}
+	cout<<"sum digits = "<<sum_digits<<endl;
+}
+void answer_21(){
+	int sum_amicable = 0;
+	for(int i=2;i<10000;i++){
+		int sum_pd = sum_of_proper_devisors(i);
+		if(sum_pd == i) continue;
+		if(sum_of_proper_devisors(sum_pd) == i){
+			sum_amicable += i;
+		} 
+	}
+	cout<<sum_amicable<<endl;
+}
+void answer_22(){
+	//read txt file
+	string file_name = "../0022_names.txt";
+	ifstream input_file(file_name);
+	if(!input_file.is_open()){
+		cerr<<"failed to open the file"<<endl;
+	}
+	string line;
+	getline(input_file, line);
+
+	vector<string> names;
+	int start_name_idx = 1;
+	for(int i=0;i<line.size();i++){
+		if(line[i] == ','){
+			string name = line.substr(start_name_idx, i-1-start_name_idx);
+			names.push_back(name);
+			start_name_idx = i+2;
+		}
+	}
+	//add last name
+	for(int i=line.size()-2;i>=0;i--){
+		if(line[i] == ','){
+			string name = line.substr(i+2, line.size()-1-(i+2));
+			cout<<name<<endl;
+			names.push_back(name);
+			break;
+		}
+	}
+
+}
 
 bool is_prime(long long n) {
 	if (n == 2) return true;
@@ -627,4 +688,36 @@ bool is_leap_year(int year){
 	}
 	return false;
 }
+string add_num_string(string a, string b){
+	if(a.size() < b.size()){
+		string c=b;
+		b=a;
+		a=c;
+	}
 
+	string res = "";
+	int add_next = 0;
+	for(int i=0;i<a.size();i++){
+		int val_a = char(a[a.size()-1-i]) - '0';
+		int val_b = i < b.size() ? char(b[b.size()-1-i]) - '0' : 0;
+
+		int sum = val_a + val_b + add_next;
+		add_next = sum/10;
+		sum %= 10;
+		res.insert(res.begin(), char(sum + int('0')));
+	}
+	if(add_next > 0) res.insert(res.begin(), char(add_next + int('0')));
+	
+	return res;
+}
+int sum_of_proper_devisors(int n){
+	int sum = 0;
+	for(int i=1;i<=sqrt(n);i++){
+		if(n%i==0){
+			int add = n/i;
+			if(add != n && add != i) sum += add;
+			sum += i;
+		}
+	}
+	return sum;
+}
